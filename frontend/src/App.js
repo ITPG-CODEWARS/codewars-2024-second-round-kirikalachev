@@ -7,6 +7,7 @@ import RightArrowIcon from './right-arrow.svg';
 import LoginIcon from './login-icon.svg';
 import ChevronDownIcon from './chevron-down.svg';
 import CopyIcon from './copy-icon.svg';
+import DownloadIcon from './download-icon.svg';
 
 const App = () => {
   const [url, setUrl] = useState("");
@@ -78,28 +79,36 @@ const App = () => {
   const qrRef = useRef(null);
 
   const handleDownloadQR = () => {
-    const svg = qrRef.current.querySelector("svg");
+    const svg = qrRef.current;
+    
+    if (!svg) {
+      console.error("QR code SVG not found");
+      return;
+    }
+    
     const svgData = new XMLSerializer().serializeToString(svg);
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
     const img = new Image();
-
+    
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
+      
       const pngFile = canvas.toDataURL("image/png");
       const downloadLink = document.createElement("a");
       downloadLink.href = pngFile;
       downloadLink.download = "QRCode.png";
       downloadLink.click();
     };
-
+    
     img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
   };
+  
 
   const toggleExpand = (index) => {
-    setExpandedIndex(expandedIndex === index ? null : index); // Toggle expand/collapse
+    setExpandedIndex(expandedIndex === index ? null : index); 
   };
 
   return (
@@ -130,10 +139,10 @@ const App = () => {
       {shortenedUrl && (
         <div className="shortened-url">
           <h3>Shortened URL:</h3>
-          <a href={shortenedUrl} target="_blank" rel="noopener noreferrer">
-            {shortenedUrl}
-          </a>
-          <button onClick={() => handleCopyToClipboard(shortenedUrl)}><img src={CopyIcon} alt="Copy link"></img></button>
+            <a href={shortenedUrl} target="_blank" rel="noopener noreferrer">
+              {shortenedUrl}
+            </a>
+          <button onClick={() => handleCopyToClipboard(shortenedUrl)}><img src={CopyIcon} alt="Copy link" title="Copy to clipboard"></img></button>
         </div>
       )}
 
@@ -146,16 +155,22 @@ const App = () => {
                 <a href={`http://localhost:5000/${item.shortUrl}`} target="_blank" rel="noopener noreferrer">
                   http://localhost:5000/{item.shortUrl}
                 </a>
-                <button onClick={() => handleCopyToClipboard(`http://localhost:5000/${item.shortUrl}`)}><img src={CopyIcon} alt="Copy link"></img></button>
+                <button onClick={() => handleCopyToClipboard(`http://localhost:5000/${item.shortUrl}`)} title="Copy to clipboard"><img src={CopyIcon} alt="Copy link"></img></button>
               </div>
 
-              <button onClick={() => toggleExpand(index)}><img src={ChevronDownIcon} alt="Expand"></img></button>
+              <div className="link-btns">
+                <QRCode className="qr-code m" value={`http://localhost:5000/${item.shortUrl}`} ref={qrRef} bgColor="transparent" fgColor="#FFFFFF"/>
+                <button onClick={handleDownloadQR} className="link-btn m"><img src={DownloadIcon} alt="Download Qr Code" title="Download QR Code"></img></button>
+                <button onClick={() => setEditUrl({ ...item })} className="link-btn m">Customize</button>
+                <button onClick={() => deleteShortUrl(item.shortUrl)} className="link-btn m">Delete</button>
+                <button onClick={() => toggleExpand(index)} className={`expandBtn ${expandedIndex === index ? "open" : ""}`}><img src={ChevronDownIcon} alt="Expand"></img></button>
+              </div>
 
               <div className={`chevron-down-content ${expandedIndex === index ? "open" : ""}`}>
-                <QRCode value={`http://localhost:5000/${item.shortUrl}`} ref={qrRef} />
-                <button onClick={handleDownloadQR}>Download QR Code</button>
-                <button onClick={() => setEditUrl({ ...item })}>Edit</button>
-                <button onClick={() => deleteShortUrl(item.shortUrl)}>Delete</button>
+                <QRCode className="qr-code" value={`http://localhost:5000/${item.shortUrl}`} ref={qrRef} bgColor="transparent" fgColor="#FFFFFF"/>
+                <button onClick={handleDownloadQR} className="link-btn"><img src={DownloadIcon} alt="Download Qr Code" title="Download QR Code"></img></button>
+                <button onClick={() => setEditUrl({ ...item })} className="link-btn">Customize</button>
+                <button onClick={() => deleteShortUrl(item.shortUrl)} className="link-btn">Delete</button>
               </div>
             </li>
           ))}
@@ -163,12 +178,13 @@ const App = () => {
       </div>
 
       {editUrl && (
-        <div>
+        <div className="edit-url">
           <h3>Edit URL</h3>
           <input
             type="url"
             value={editUrl.fullUrl}
             onChange={(e) => setEditUrl({ ...editUrl, fullUrl: e.target.value })}
+            disabled
           />
           <input
             type="text"
@@ -176,6 +192,7 @@ const App = () => {
             value={editUrl.newShortUrl}
             onChange={(e) => setEditUrl({ ...editUrl, newShortUrl: e.target.value })}
           />
+          <button onClick={() => setEditUrl(null)} className="close-btn">Close</button> 
           <button onClick={handleEdit}>Save Changes</button>
         </div>
       )}
