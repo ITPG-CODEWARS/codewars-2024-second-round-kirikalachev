@@ -1,0 +1,160 @@
+/* MOBILE VERSION */
+
+/* General css */
+* {
+    color: #C9CED6;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    outline: none;
+}
+
+body {
+    background-color: #0B101B;
+}
+
+/* Header */
+header h1 {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+header button {
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+    border-radius: 48px;
+    background-color: #181E29;
+    border: 1px solid #353C4A;
+}
+
+header {
+    display: flex;
+    padding: 5%;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+button {
+    cursor: pointer;
+}
+
+h1, h2 {
+    background: linear-gradient(90deg, #144EE3 0%, #EB568E 19%, #A353AA 64%, #144EE3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    /* color: white; */
+}
+
+/* Slogan */
+.slogan {
+    text-align: center;
+    width: 80%;
+    margin: auto;
+}
+
+.slogan h2 {
+    font-weight: 900;
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+.slogan p {
+    font-weight: lighter;
+    font-size: 15px;
+}
+
+/* url shortener input */
+.url-shortener {
+    margin: 20px auto;
+    width: 80%;
+    display: flex;
+    background-color: #181E29;
+    border-radius: 48px;
+    overflow: hidden;
+    padding: 4px;
+    border: 2px solid #353C4A;
+}
+
+.url-shortener input {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    margin-left: 3px;
+}
+
+.url-shortener button {
+    background-color: #144EE3;
+    border-radius: 48px;
+    border: none;
+    width: 35px;
+    height: 30px;
+}
+
+
+/* shortened url - result */
+.shortened-url {
+    margin: 20px;
+    text-align: center;
+}
+.shortened-url button {
+    background-color: transparent;
+    border: none;
+}
+
+
+/* shortened links */
+
+.shortened-links {
+    width: 80%;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.shortened-links h3 {
+    background-color: #181E29;
+    padding: 20px;
+    font-size: 15px;
+}
+
+.shortened-link-component {
+    width: calc(100% - 40px);
+    padding: 10px 20px;
+    background-color: #0E131E;
+    border-bottom: 4px solid #0B101B;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 2px solid red; */
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.shortened-link-component > * {
+    /* border: 2px solid pink; */
+}
+
+.shortened-link-component a {
+    margin-right: 15px;
+}
+
+.shortened-link-component button {
+    background-color: transparent;
+    border: none;
+}
+
+.chevron-down-content {
+    opacity: 0;
+    flex: 100%;
+    max-height: 0;
+    transition: all 0.2s;
+}
+
+.chevron-down-content.open {
+    opacity: 1;
+    max-height: 50vh;
+}
