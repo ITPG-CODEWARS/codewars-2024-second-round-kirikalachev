@@ -50,7 +50,6 @@ h1, h2 {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
-    /* color: white; */
 }
 
 /* Slogan */
@@ -103,7 +102,8 @@ h1, h2 {
 .shortened-url {
     margin: 20px;
     text-align: center;
-}
+}  
+
 .shortened-url button {
     background-color: transparent;
     border: none;
